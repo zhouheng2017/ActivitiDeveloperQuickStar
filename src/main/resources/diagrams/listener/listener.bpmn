@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath"
+             id="m1523347105121" name="" targetNamespace="http://www.activiti.org/test"
+             typeLanguage="http://www.w3.org/2001/XMLSchema">
+    <process id="listener" isClosed="false" isExecutable="true" name="listener" processType="None">
+        <extensionElements>
+            <activiti:executionListener event="start"
+                                        class="com.example.activiti.listener.ProcessStartExecutionListener"/>
+            <activiti:executionListener event="end" delegateExpression="${endListener}"/>
+        </extensionElements>
+        <startEvent id="_2" name="StartEvent"/>
+        <userTask activiti:exclusive="true" id="_3" name="任务监听器" activiti:assignee="user">
+            <extensionElements>
+                <!--为该任务添加任务创建监听器-->
+                <activiti:taskListener event="create" class="com.example.activiti.listener.CreateTaskListener">
+                    <!--为监听器注入字段content-->
+                    <activiti:field name="content">
+                        <activiti:expression>Hello, ${name}</activiti:expression>
+                    </activiti:field>
+                    <!--为监听器注入字段引擎内置变量task-->
+                    <activiti:field name="task">
+                        <activiti:expression>${task}</activiti:expression>
+                    </activiti:field>
+                </activiti:taskListener>
+
+                <!--配置任务分配监听-->
+                <activiti:taskListener event="assignment" delegateExpression="${assignmentDelegate}"/>
+
+            </extensionElements>
+        </userTask>
+        <endEvent id="_4" name="EndEvent"/>
+        <sequenceFlow id="_5" sourceRef="_2" targetRef="_3"/>
+        <sequenceFlow id="_6" sourceRef="_3" targetRef="_4"/>
+    </process>
+    <bpmndi:BPMNDiagram
+            documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0"
+            id="Diagram-_1" name="New Diagram">
+        <bpmndi:BPMNPlane bpmnElement="listener">
+            <bpmndi:BPMNShape bpmnElement="_2" id="Shape-_2">
+                <omgdc:Bounds height="32.0" width="32.0" x="160.0" y="150.0"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="_3" id="Shape-_3">
+                <omgdc:Bounds height="55.0" width="85.0" x="370.0" y="155.0"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="_4" id="Shape-_4">
+                <omgdc:Bounds height="32.0" width="32.0" x="665.0" y="155.0"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="_5" id="BPMNEdge__5" sourceElement="_2" targetElement="_3">
+                <omgdi:waypoint x="192.0" y="166.0"/>
+                <omgdi:waypoint x="370.0" y="182.5"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="_6" id="BPMNEdge__6" sourceElement="_3" targetElement="_4">
+                <omgdi:waypoint x="455.0" y="182.5"/>
+                <omgdi:waypoint x="665.0" y="171.0"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

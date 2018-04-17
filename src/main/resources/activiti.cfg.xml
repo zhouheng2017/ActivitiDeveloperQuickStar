@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+   <!-- <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
+        &lt;!&ndash;配置数据库的相关信息&ndash;&gt;
+
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="jdbcUsername" value="${jdbc.username}"/>
+        <property name="jdbcPassword" value="${jdbc.password}"/>
+        <property name="jdbcDriver" value="${jdbc.driverClassName}"/>
+
+        &lt;!&ndash;配置数据表创建的策略&ndash;&gt;
+        <property name="databaseSchemaUpdate" value="true"/>
+
+    </bean>-->
+    <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
+    <!-- 配置数据库连接 -->
+    <property name="jdbcDriver" value="com.mysql.jdbc.Driver"></property>
+    <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/activeDB?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf8"></property>
+    <property name="jdbcUsername" value="root"></property>
+    <property name="jdbcPassword" value="root"></property>
+
+    <!-- 配置创建表策略 :没有表时，自动创建 -->
+    <property name="databaseSchemaUpdate" value="true"></property>
+
+</bean>
+
+</beans>

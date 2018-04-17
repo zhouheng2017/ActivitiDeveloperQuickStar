@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath"
+             id="m1523344235989" name="" targetNamespace="http://www.activiti.org/test"
+             typeLanguage="http://www.w3.org/2001/XMLSchema">
+    <process id="expression" isClosed="false" isExecutable="true" processType="None">
+        <startEvent id="_2" name="StartEvent"/>
+        <serviceTask activiti:exclusive="true" id="getAuthenticateUserId" name="获取流程启动人"
+                     activiti:expression="${authenticatedUserId}"
+                     activiti:resultVariable="authenticatedUserIdForTest"/>
+        <serviceTask activiti:exclusive="true" id="exeExpression" name="计算表达式"
+                 activiti:expression="${myBean.print(name)}" activiti:resultVariable="returnValue"/>
+        <serviceTask activiti:exclusive="true" id="executionExample" name="Execution变量"
+                     activiti:expression="${myBean.printBKey(execution)}"
+                     activiti:resultVariable="businessKey"/>
+        <userTask activiti:exclusive="true" id="userTask1" name="在用户任务上添加表达式">
+            <extensionElements>
+                <activiti:taskListener event="create" expression="${myBean.invokeTask(task)}"/>
+            </extensionElements>
+        </userTask>
+        <endEvent id="_7" name="EndEvent"/>
+        <sequenceFlow id="_8" sourceRef="_2" targetRef="getAuthenticateUserId"/>
+        <sequenceFlow id="_9" sourceRef="getAuthenticateUserId" targetRef="exeExpression"/>
+        <sequenceFlow id="_10" sourceRef="exeExpression" targetRef="executionExample"/>
+        <sequenceFlow id="_11" sourceRef="executionExample" targetRef="userTask1"/>
+        <sequenceFlow id="_12" sourceRef="userTask1" targetRef="_7"/>
+    </process>
+    <bpmndi:BPMNDiagram
+            documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0"
+            id="Diagram-_1" name="New Diagram">
+        <bpmndi:BPMNPlane bpmnElement="expression">
+            <bpmndi:BPMNShape bpmnElement="_2" id="Shape-_2">
+                <omgdc:Bounds height="32.0" width="32.0" x="85.0" y="20.0"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="getAuthenticateUserId" id="Shape-getAuthenticateUserId">
+                <omgdc:Bounds height="55.0" width="85.0" x="260.0" y="55.0"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="exeExpression" id="Shape-exeExpression">
+                <omgdc:Bounds height="55.0" width="85.0" x="510.0" y="155.0"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="executionExample" id="Shape-executionExample">
+                <omgdc:Bounds height="55.0" width="85.0" x="730.0" y="230.0"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="userTask1" id="Shape-userTask1">
+                <omgdc:Bounds height="55.0" width="85.0" x="905.0" y="315.0"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="_7" id="Shape-_7">
+                <omgdc:Bounds height="32.0" width="32.0" x="1095.0" y="385.0"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="_12" id="BPMNEdge__12" sourceElement="_6" targetElement="_7">
+                <omgdi:waypoint x="990.0" y="342.5"/>
+                <omgdi:waypoint x="1095.0" y="401.0"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="_2" targetElement="execExpression">
+                <omgdi:waypoint x="117.0" y="36.0"/>
+                <omgdi:waypoint x="260.0" y="82.5"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="execExpression" targetElement="_4">
+                <omgdi:waypoint x="345.0" y="82.5"/>
+                <omgdi:waypoint x="510.0" y="182.5"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="_11" id="BPMNEdge__11" sourceElement="_5" targetElement="_6">
+                <omgdi:waypoint x="815.0" y="257.5"/>
+                <omgdi:waypoint x="905.0" y="342.5"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="_10" id="BPMNEdge__10" sourceElement="_4" targetElement="_5">
+                <omgdi:waypoint x="595.0" y="182.5"/>
+                <omgdi:waypoint x="730.0" y="257.5"/>
+                <bpmndi:BPMNLabel>
+                    <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

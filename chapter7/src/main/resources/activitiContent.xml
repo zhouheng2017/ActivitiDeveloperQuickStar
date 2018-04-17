@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:content="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <content:property-placeholder location="classpath:jdbc.properties"/>
+    <content:component-scan base-package="com.example"/>
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="username" value="${jdbc.username}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="driverClassName" value="${jdbc.driver}"/>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="namingStrategy">
+            <bean class="org.hibernate.cfg.ImprovedNamingStrategy"/>
+        </property>
+
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+        <property name="packagesToScan" value="com.example.activiti.chapter7.entity" />
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="databaseSchemaUpdate" value="true"/>
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="jobExecutorActivate" value="false"/>
+
+        <!--流程的自动部署-->
+        <property name="deploymentResources">
+            <list>
+                <value>classpath*:/diagrams/chapter7/leave.zip</value>
+                <!--<value>classpath*:/diagrams/formkey.zip</value>-->
+            </list>
+        </property>
+        <!--value="classpath*:/diagrams/*.bpmn"/>-->
+        <!--single-resource为每个单独的资源创建单独的部署，并对该部署应用重复过滤。这是您将用于使每个流程定义分开部署的值，并且只有在流程定义版本发生更改时才创建新的流程定义版本。-->
+        <property name="deploymentMode" value="single-resource"/>
+        <!--设置乱码的问题-->
+        <property name="activityFontName" value="宋体"/>
+        <property name="labelFontName" value="宋体"/>
+
+       <!-- &lt;!&ndash;注册自定义表单&ndash;&gt;
+        <property name="customFormEngines">
+            <list>
+                <bean class="com.example.activiti.MyFormEngine"/>
+            </list>
+        </property>-->
+
+     <!--   <property name="beans">
+            <map>
+                <entry key="myBean" value-ref="myBean"></entry>
+            </map>
+        </property>-->
+
+    </bean>
+    <!--<bean id="myBean" class="com.example.activiti.MyBean"></bean>-->
+
+    <bean id="activeRule" class="org.activiti.engine.test.ActivitiRule">
+        <property name="processEngine" ref="processEngine"/>
+    </bean>
+
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+    </bean>
+
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
+    <bean id="formService" factory-bean="processEngine" factory-method="getFormService"/>
+    <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"/>
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/>
+
+</beans>

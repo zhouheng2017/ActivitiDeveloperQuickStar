@@ -43,12 +43,7 @@
         <property name="jobExecutorActivate" value="false"/>
 
         <!--流程的自动部署-->
-        <property name="deploymentResources">
-            <list>
-                <value>classpath*:/diagrams/chapter7/leave.zip</value>
-                <!--<value>classpath*:/diagrams/formkey.zip</value>-->
-            </list>
-        </property>
+        <property name="deploymentResources" value="classpath*:/diagrams/chapter7/leave.zip"/>
         <!--value="classpath*:/diagrams/*.bpmn"/>-->
         <!--single-resource为每个单独的资源创建单独的部署，并对该部署应用重复过滤。这是您将用于使每个流程定义分开部署的值，并且只有在流程定义版本发生更改时才创建新的流程定义版本。-->
         <property name="deploymentMode" value="single-resource"/>
